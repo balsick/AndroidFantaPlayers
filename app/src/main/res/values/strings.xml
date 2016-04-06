@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">FantaPlayers</string>
+    <string name="api_base_url">http://balsick.eu:8080/api/public/fantaplayers/</string>
+</resources>
