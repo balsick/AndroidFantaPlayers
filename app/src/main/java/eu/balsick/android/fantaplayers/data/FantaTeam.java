@@ -1,11 +1,13 @@
 package eu.balsick.android.fantaplayers.data;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import eu.balsick.android.fantaplayers.FantaPlayer;
+import eu.balsick.android.fantaplayers.comm.data.FantaPlayersDB;
 
 /**
  * Created by balsi on 06/04/2016.
@@ -36,5 +38,13 @@ public class FantaTeam {
             mapByRole.get(player.getRole()).add(player);
         }
         return mapByRole;
+    }
+
+    public static List<FantaPlayer> getSample(Context context) {
+        return FantaPlayersDB.getCurrent(context).getPlayers("player_team = 'juventus'");
+    }
+
+    public void setPlayers(List<FantaPlayer> players) {
+        this.players = players;
     }
 }

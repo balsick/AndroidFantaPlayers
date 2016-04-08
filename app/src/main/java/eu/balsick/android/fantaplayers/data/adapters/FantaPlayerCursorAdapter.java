@@ -1,4 +1,4 @@
-package eu.balsick.android.fantaplayers;
+package eu.balsick.android.fantaplayers.data.adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import eu.balsick.android.fantaplayers.R;
+import eu.balsick.android.fantaplayers.data.Team;
 
 /**
  * Created by balsi on 24/03/2016.
@@ -29,6 +32,6 @@ public class FantaPlayerCursorAdapter extends CursorAdapter {
         ImageView status = (ImageView)view.findViewById(R.id.fantaplayerStatusIcon);
         ImageView team = (ImageView)view.findViewById(R.id.fantaplayerTeamIcon);
         tv.setText(cursor.getString(cursor.getColumnIndexOrThrow("name")));
-        team.setImageResource(Team.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("team"))).mipmapId);
+        team.setImageResource(Team.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("team"))).getMipmapId());
     }
 }

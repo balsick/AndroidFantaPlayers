@@ -1,4 +1,4 @@
-package eu.balsick.android.fantaplayers;
+package eu.balsick.android.fantaplayers.data.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,37 +19,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import eu.balsick.android.fantaplayers.data.FantaPlayer;
+import eu.balsick.android.fantaplayers.R;
+import eu.balsick.android.fantaplayers.data.Team;
+
 /**
  * Created by balsi on 24/03/2016.
  */
 public class FantaPlayerAdapter extends BaseAdapter implements Filterable {
 
     Context context;
-    int layoutResourceId;
-    final List<FantaPlayer> players;
+    int standardItemLayoutId;
+    List<FantaPlayer> players;
     List<FantaPlayer> filteredPlayers;
     private Filter filter;
 
-    public FantaPlayerAdapter(Context context, int layoutResourceId, List<FantaPlayer> players) {
+    public FantaPlayerAdapter(Context context, int standardItemLayoutId, List<FantaPlayer> players) {
         super();
         this.context = context;
-        this.layoutResourceId = layoutResourceId;
-        this.players = Collections.unmodifiableList(players);
-    }
-
-    public void setDataToPlayers(List<FantaPlayer> players){
-        Map<String, FantaPlayer> map = new HashMap<>();
-        for (FantaPlayer player : players)
-            map.put(player.getName(), player);
-        for (FantaPlayer player : this.players){
-            player.setData(map.get(player.getName()));
-        }
-    }
-
-    public void setDataToPlayers(Map<String, Map<String, String>> map){
-        for (FantaPlayer player : this.players){
-            player.setData(map.get(player.getName().toUpperCase()));
-        }
+        this.standardItemLayoutId = standardItemLayoutId;
+        if (players != null)
+            this.players = Collections.unmodifiableList(players);
     }
     @Override
     public int getCount() {
@@ -77,7 +67,7 @@ public class FantaPlayerAdapter extends BaseAdapter implements Filterable {
 
         if(row == null) {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
+            row = inflater.inflate(standardItemLayoutId, parent, false);
 
             holder = new FantaPlayerHolder();
             holder.statusIcon = (ImageView)row.findViewById(R.id.fantaplayerStatusIcon);
@@ -90,16 +80,14 @@ public class FantaPlayerAdapter extends BaseAdapter implements Filterable {
             holder = (FantaPlayerHolder)row.getTag();
         }
 
-//        row.setOnClickListener((item)->{});
-
         FantaPlayer player = (FantaPlayer) getItem(position);
         holder.name.setText(player.getName());
         if (player.getTeam() != null)
-            holder.teamIcon.setImageResource(Team.getTeamByName(player.getTeam()).mipmapId);
+            holder.teamIcon.setImageResource(Team.getTeamByName(player.getTeam()).getMipmapId());
         if (player.getVsTeam() != null)
-            holder.vsTeamIcon.setImageResource(Team.getTeamByName(player.getVsTeam()).mipmapId);
+            holder.vsTeamIcon.setImageResource(Team.getTeamByName(player.getVsTeam()).getMipmapId());
         if (player.getStatus() != null)
-            holder.statusIcon.setImageResource(player.getStatus().mipmap);
+            holder.statusIcon.setImageResource(player.getStatus().getMipmapId());
         return row;
     }
 
@@ -145,6 +133,10 @@ public class FantaPlayerAdapter extends BaseAdapter implements Filterable {
                 notifyDataSetChanged();
             }
         };
+    }
+
+    public List<FantaPlayer> getPlayers() {
+        return players;
     }
 
     static class FantaPlayerHolder {

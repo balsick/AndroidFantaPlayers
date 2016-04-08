@@ -13,8 +13,9 @@
             android:id="@+id/mainfragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="eu.balsick.android.fantaplayers.AllPlayersFragment"
-            tools:layout="@layout/fragment_players_list" />
+            android:background="#FFFFFF"
+            class="eu.balsick.android.fantaplayers.fragments.FantaTeamFragment"
+            tools:layout="@layout/fragment_fantateam" />
 
     </FrameLayout>
     <!-- The navigation drawer -->

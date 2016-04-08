@@ -1,4 +1,4 @@
-package eu.balsick.android.fantaplayers;
+package eu.balsick.android.fantaplayers.data;
 
 import java.util.List;
 

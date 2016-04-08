@@ -1,4 +1,4 @@
-package eu.balsick.android.fantaplayers;
+package eu.balsick.android.fantaplayers.activities;
 
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import eu.balsick.android.fantaplayers.fragments.AllPlayersFragment;
+import eu.balsick.android.fantaplayers.R;
+import eu.balsick.android.fantaplayers.fragments.FantaTeamFragment;
 
 public class PlayersListActivity extends FragmentActivity {
 
@@ -22,7 +26,7 @@ public class PlayersListActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_players_list);
 
-        mPlanetTitles = getResources().getStringArray(R.array.planets_array);
+        mPlanetTitles = getResources().getStringArray(R.array.drawer_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
@@ -45,6 +49,8 @@ public class PlayersListActivity extends FragmentActivity {
         Fragment fragment;
         if (position == 0)
             fragment = new AllPlayersFragment();
+        else if (position == 1)
+            fragment = new FantaTeamFragment();
         else
             return;
 //        Bundle args = new Bundle();
@@ -66,6 +72,7 @@ public class PlayersListActivity extends FragmentActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getActionBar().setTitle(mTitle);
+        if (getActionBar() != null)
+            getActionBar().setTitle(mTitle);
     }
 }

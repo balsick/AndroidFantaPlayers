@@ -1,8 +1,10 @@
-package eu.balsick.android.fantaplayers;
+package eu.balsick.android.fantaplayers.data;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import eu.balsick.android.fantaplayers.R;
 
 /**
  * Created by balsi on 24/03/2016.
@@ -33,6 +35,10 @@ public enum Team {
     Team(String name, int mipmap){
         this.name = name;
         this.mipmapId = mipmap;
+    }
+
+    public Integer getMipmapId() {
+        return mipmapId;
     }
 
     public static Team getTeamByName(String name) {

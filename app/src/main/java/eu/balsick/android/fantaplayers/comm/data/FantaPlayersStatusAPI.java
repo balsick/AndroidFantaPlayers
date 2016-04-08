@@ -16,12 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import eu.balsick.android.fantaplayers.APIResultListener;
-import eu.balsick.android.fantaplayers.FantaPlayer;
+import eu.balsick.android.fantaplayers.data.APIResultListener;
+import eu.balsick.android.fantaplayers.data.FantaPlayer;
 import eu.balsick.android.fantaplayers.R;
+import eu.balsick.android.fantaplayers.fragments.FantaTeamFragment;
 
 /**
- * Created by balsi on 02/04/2016.
+ * Created by balsick on 02/04/2016.
  */
 public class FantaPlayersStatusAPI implements Response.Listener<String>, Response.ErrorListener {
 
@@ -105,5 +106,15 @@ public class FantaPlayersStatusAPI implements Response.Listener<String>, Respons
     @Override
     public void onErrorResponse(VolleyError error) {
         String abc = null;
+    }
+
+    public void getData(APIResultListener listener) {
+        addAPIResultListener(listener);
+        query();
+    }
+
+    public static void getData(Context context, APIResultListener listener) {
+        getCurrent(context).getData(listener);
+
     }
 }

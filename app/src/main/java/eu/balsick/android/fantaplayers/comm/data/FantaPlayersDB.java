@@ -2,13 +2,14 @@ package eu.balsick.android.fantaplayers.comm.data;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.Nullable;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.balsick.android.fantaplayers.FantaPlayer;
+import eu.balsick.android.fantaplayers.data.FantaPlayer;
 
 /**
  * Created by enrico.balsamo on 28/03/2016.
@@ -22,14 +23,19 @@ public class FantaPlayersDB extends SQLiteAssetHelper {
     private FantaPlayersDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
-    public Cursor getPlayersCursor() {
-        return this.getReadableDatabase().rawQuery("select name as _id, * from players order by _id", null);
+    public Cursor getPlayersCursor(String filter) {
+        String sql = "select player_name as _id, * from players";
+        if (filter != null)
+            sql += " where "+filter;
+        sql += " order by _id";
+        return this.getReadableDatabase().rawQuery(sql, null);
     }
-
     public List<FantaPlayer> getPlayers() {
+        return getPlayers(null);
+    }
+    public List<FantaPlayer> getPlayers(String filter) {
         List<FantaPlayer> players = new ArrayList<>();
-        Cursor cursor = getPlayersCursor();
+        Cursor cursor = getPlayersCursor(filter);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String name = cursor.getString(cursor.getColumnIndex("player_name"));
