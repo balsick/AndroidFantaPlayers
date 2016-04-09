@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import eu.balsick.android.fantaplayers.comm.data.CachedGeneralData;
 import eu.balsick.android.fantaplayers.comm.data.FantaPlayersDB;
 
 /**
@@ -28,6 +29,9 @@ public class FantaTeam {
         players.add(player);
     }
 
+    public void notifyDataSetChanged() {
+        mapByRole = null;
+    }
     public Map<String, List<FantaPlayer>> mapByRole() {
         if (mapByRole != null)
             return mapByRole;
@@ -41,7 +45,8 @@ public class FantaTeam {
     }
 
     public static List<FantaPlayer> getSample(Context context) {
-        return FantaPlayersDB.getCurrent(context).getPlayers("player_team = 'juventus'");
+//        return FantaPlayersDB.getCurrent(context).getPlayers("player_team = 'juventus'");
+        return CachedGeneralData.getSample(context);
     }
 
     public void setPlayers(List<FantaPlayer> players) {

@@ -23,12 +23,8 @@ import eu.balsick.android.fantaplayers.data.adapters.fantateamadapter.Separator;
  */
 public class FantaTeamAdapter extends FantaPlayerAdapter {
 
-    FantaTeamAdapterLoader loader;
-
     public FantaTeamAdapter(Context context, int playerLayoutResourceId, FantaTeamAdapterLoader loader) {
-        super(context, playerLayoutResourceId, null);
-        assert loader != null;
-        this.loader = loader;
+        super(context, playerLayoutResourceId, loader);
     }
 
     @Override
@@ -121,7 +117,7 @@ public class FantaTeamAdapter extends FantaPlayerAdapter {
         public abstract void set(Object object);
     }
 
-    class SeparatorHolder extends AbstractHolder {
+    static class SeparatorHolder extends AbstractHolder {
 
         TextView tv;
         @Override
@@ -140,10 +136,11 @@ public class FantaTeamAdapter extends FantaPlayerAdapter {
 
     static class AddButtonHolder extends AbstractHolder {
 
-        Button button;
+        TextView button;
+
         @Override
         public AbstractHolder init(View row) {
-            button = (Button)row.findViewById(R.id.fantateambuttonadd);
+            button = (TextView)row.findViewById(R.id.fantateambuttonadd);
             return this;
         }
 

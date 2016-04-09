@@ -3,12 +3,12 @@ package eu.balsick.android.fantaplayers.comm.internal;
 /**
  * Created by balsi on 07/04/2016.
  */
-public interface FragmentRequestListener {
+public interface FragmentRequestListener<T extends FragmentRequestListener.RequestType> {
 
-    public void fragmentRequestHappened(FragmentRequest request);
+    void fragmentRequestHappened(FragmentRequest<T> request);
 
-    class FragmentRequest {
-        String request;
+    interface RequestType{
 
     }
+
 }

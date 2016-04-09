@@ -7,7 +7,7 @@ import eu.balsick.android.fantaplayers.data.FantaPlayerRole;
  */
 public class AddButton {
 
-    FantaPlayerRole role;
+    private FantaPlayerRole role;
 
     public AddButton(FantaPlayerRole role) {
         this.role = role;

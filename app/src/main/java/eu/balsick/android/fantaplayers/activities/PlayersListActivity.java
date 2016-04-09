@@ -10,9 +10,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import eu.balsick.android.fantaplayers.comm.internal.FragmentRequest;
+import eu.balsick.android.fantaplayers.comm.internal.FragmentRequestListener;
 import eu.balsick.android.fantaplayers.fragments.AllPlayersFragment;
 import eu.balsick.android.fantaplayers.R;
 import eu.balsick.android.fantaplayers.fragments.FantaTeamFragment;
+import eu.balsick.android.fantaplayers.comm.internal.FragmentRequestBus;
 
 public class PlayersListActivity extends FragmentActivity {
 
@@ -20,6 +23,8 @@ public class PlayersListActivity extends FragmentActivity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private CharSequence mTitle;
+    private FragmentRequestListener<FantaTeamFragment.AddPlayerToRoleRequest> asAddPlayerToRoleRequestListener;
+    private FragmentRequestListener<AllPlayersFragment.PlayerSelectedRequest> asPlayerSelectedRequestListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,24 @@ public class PlayersListActivity extends FragmentActivity {
         mDrawerList.setAdapter(new ArrayAdapter<>(this, R.layout.drawer_list_item, mPlanetTitles));
         // Set the list's click listener
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        /**
+         * registration to eventbus
+         */
+        FragmentRequestBus.getCurrent().registerListenerForRequest(FantaTeamFragment.AddPlayerToRoleRequest.class, asAddPlayerToRoleRequestListener());
+
+    }
+
+    public FragmentRequestListener<FantaTeamFragment.AddPlayerToRoleRequest> asAddPlayerToRoleRequestListener() {
+        if (asAddPlayerToRoleRequestListener == null)
+            asAddPlayerToRoleRequestListener = new FragmentRequestListener<FantaTeamFragment.AddPlayerToRoleRequest>() {
+                @Override
+                public void fragmentRequestHappened(FragmentRequest<FantaTeamFragment.AddPlayerToRoleRequest> request) {
+                    Fragment fragment = AllPlayersFragment.newInstance(request, request.type.getRole());
+                    swapToFragment(fragment);
+                }
+            };
+        return asAddPlayerToRoleRequestListener;
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -56,17 +79,22 @@ public class PlayersListActivity extends FragmentActivity {
 //        Bundle args = new Bundle();
 //        args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
 //        fragment.setArguments(args);
+        swapToFragment(fragment);
 
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
 
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
         setTitle(mPlanetTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerList);
+    }
+
+    private void swapToFragment(Fragment fragment) {
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame, fragment)
+                .addToBackStack(fragment.toString())
+                .commitAllowingStateLoss();
     }
 
     @Override

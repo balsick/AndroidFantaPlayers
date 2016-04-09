@@ -21,6 +21,8 @@ import java.util.regex.Pattern;
 
 import eu.balsick.android.fantaplayers.data.FantaPlayer;
 import eu.balsick.android.fantaplayers.R;
+import eu.balsick.android.fantaplayers.data.FantaPlayerAdapterLoader;
+import eu.balsick.android.fantaplayers.data.FantaTeamAdapterLoader;
 import eu.balsick.android.fantaplayers.data.Team;
 
 /**
@@ -30,29 +32,29 @@ public class FantaPlayerAdapter extends BaseAdapter implements Filterable {
 
     Context context;
     int standardItemLayoutId;
-    List<FantaPlayer> players;
     List<FantaPlayer> filteredPlayers;
     private Filter filter;
+    FantaPlayerAdapterLoader loader;
 
-    public FantaPlayerAdapter(Context context, int standardItemLayoutId, List<FantaPlayer> players) {
+    public FantaPlayerAdapter(Context context, int standardItemLayoutId, FantaPlayerAdapterLoader loader) {
         super();
         this.context = context;
         this.standardItemLayoutId = standardItemLayoutId;
-        if (players != null)
-            this.players = Collections.unmodifiableList(players);
+        assert loader != null;
+        this.loader = loader;
     }
     @Override
     public int getCount() {
         if (filteredPlayers != null)
             return filteredPlayers.size();
-        return players.size();
+        return loader.getCount();
     }
 
     @Override
     public Object getItem(int position) {
         if (filteredPlayers != null)
             return filteredPlayers.get(position);
-        return players.get(position);
+        return loader.getItem(position);
     }
 
     @Override
@@ -110,7 +112,7 @@ public class FantaPlayerAdapter extends BaseAdapter implements Filterable {
                     List<FantaPlayer> filteredPlayers = new ArrayList<>();
                     final Pattern pattern = Pattern.compile("(?i)(?:\\w+ +)*?" + constraint + "(?-i).*");
 
-                    for (FantaPlayer player : FantaPlayerAdapter.this.players) {
+                    for (FantaPlayer player : loader.getPlayers()) {
                         if (pattern.matcher(player.getName()).matches() || pattern.matcher(player.getTeam()).matches())
                             filteredPlayers.add(player);
                     }
@@ -136,7 +138,7 @@ public class FantaPlayerAdapter extends BaseAdapter implements Filterable {
     }
 
     public List<FantaPlayer> getPlayers() {
-        return players;
+        return loader.getPlayers();
     }
 
     static class FantaPlayerHolder {

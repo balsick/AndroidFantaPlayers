@@ -1,5 +1,7 @@
 package eu.balsick.android.fantaplayers.data;
 
+import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,12 +12,12 @@ import eu.balsick.android.fantaplayers.data.adapters.fantateamadapter.Separator;
 /**
  * Created by balsick on 07/04/2016.
  */
-public class FantaTeamAdapterLoader {
+public class FantaTeamAdapterLoader extends FantaPlayerAdapterLoader {
 
     List<Object> objectsList;
-    List<FantaPlayer> players;
     FantaTeam fantaTeam;
     Map<String, List<FantaPlayer>> playersByRole = null;
+    ListView subscriber;
 
     public FantaTeamAdapterLoader(FantaTeam fantaTeam) {
         this.fantaTeam = fantaTeam;
@@ -29,11 +31,15 @@ public class FantaTeamAdapterLoader {
         }
     }
 
+    public void setSubscriber(ListView subscriber) {
+        this.subscriber = subscriber;
+    }
+
     public Object getItem(int position) {
         return listObjects().get(position);
     }
 
-    public List<Object> listObjects() {
+    private List<Object> listObjects() {
         if (objectsList != null)
             return objectsList;
         objectsList = new ArrayList<>();
@@ -58,16 +64,19 @@ public class FantaTeamAdapterLoader {
         objectsList = null;
     }
 
-    public List<FantaPlayer> getPlayers() {
-        return players;
-    }
-
     public void notifyDataSetChanged() {
         objectsList = null;
+        fantaTeam.notifyDataSetChanged();
         playersByRole = fantaTeam.mapByRole();
+//        if (subscriber != null)
+//            subscriber.getAdapter()
     }
 
     public int getCount() {
         return listObjects().size();
+    }
+
+    public void addPlayer(FantaPlayer player) {
+        fantaTeam.addPlayer(player);
     }
 }

@@ -19,19 +19,15 @@ import java.util.Map;
 import eu.balsick.android.fantaplayers.data.APIResultListener;
 import eu.balsick.android.fantaplayers.data.FantaPlayer;
 import eu.balsick.android.fantaplayers.R;
-import eu.balsick.android.fantaplayers.fragments.FantaTeamFragment;
 
 /**
  * Created by balsick on 02/04/2016.
  */
 public class FantaPlayersStatusAPI implements Response.Listener<String>, Response.ErrorListener {
 
-    static final String charset = java.nio.charset.StandardCharsets.UTF_8.name();
-
     private static FantaPlayersStatusAPI current;
 
     String url;
-    String json;
     Context context;
     List<APIResultListener> apiResultListeners;
 
@@ -82,19 +78,6 @@ public class FantaPlayersStatusAPI implements Response.Listener<String>, Respons
             return;
         Type type = new TypeToken<Map<String, Object>>(){}.getType();
         Map<String, Object> map = new Gson().fromJson(response, type);
-//        Map<String, Map<String, String>> result = (Map<String, Map<String, String>>)map.get("result");
-//        Map<String, FantaPlayer> playersMap = new HashMap<>();
-//        for (FantaPlayer player : players){
-//            playersMap.put(player.getName().toUpperCase(), player);
-//        }
-//        for (String key : result.keySet()){
-//            Map<String, String> info = result.get(key);
-//            String status = info.get("status");
-//            String vsteam = info.get("vsteam");
-//            FantaPlayer player = playersMap.get(key.toUpperCase());
-//            player.setStatus(status);
-//            player.setVsTeam(vsteam);
-//        }
         if (context != null && context instanceof APIResultListener)
             ((APIResultListener)context).apiServiceComplete(map.get("result"));//players == null ? map.get("result") : players);
         if (apiResultListeners != null)
@@ -105,7 +88,6 @@ public class FantaPlayersStatusAPI implements Response.Listener<String>, Respons
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        String abc = null;
     }
 
     public void getData(APIResultListener listener) {

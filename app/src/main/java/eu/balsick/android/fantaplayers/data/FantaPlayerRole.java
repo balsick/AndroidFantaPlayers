@@ -11,6 +11,14 @@ public enum FantaPlayerRole {
     private FantaPlayerRole(String role) {
         this.role = role;
     }
+
+    public static FantaPlayerRole get(String role){
+        for (FantaPlayerRole item : values())
+            if (item.role.equals(role))
+                return item;
+        return null;
+    }
+
     public String role(){
         return role;
     }
